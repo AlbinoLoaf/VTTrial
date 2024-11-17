@@ -1,0 +1,83 @@
+@page "/tracker"
+@attribute [StreamRendering]
+@using System.Collections.Generic;
+@rendermode InteractiveServer
+
+<PageTitle>Tracker</PageTitle>
+
+<h1>Tracker</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (Order == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Initiative</th>
+                <th>Character</th>
+                <th>Turn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Chackter in Order)
+            {
+                <tr>
+                    <td>@Chackter.Name</td>
+                    <td>@Chackter.Initiative</td>
+                    @if (Chackter.Turn){
+                        <td>X</td>
+                    } else {
+                       <td> </td>
+
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+<button class="btn btn-primary" @onclick="Incrementturn">Next turn</button>
+
+}
+
+@code {
+    public List<Chackter> Order;
+    private int TurnIndex =0;
+    private int NumPlayers=8;
+    protected override async Task OnInitializedAsync()
+    {
+        string[] names = { "Bob", "Alice", "Mallory", "Charlie", "Adam", "Silas" };
+        Order = Enumerable.Range(1, NumPlayers).Select(index => new Chackter
+        {
+            Initiative = Random.Shared.Next(0, 30),
+            Name = names[Random.Shared.Next(names.Length)],
+            Turn = false
+        }).ToList();
+
+        SortCharactersByInitiative(Order);
+        if (Order.Any())
+        {
+            Order[0].Turn = true;
+        }
+    }
+    private void Incrementturn()
+    {
+        Order[TurnIndex].Turn = false;
+        TurnIndex = (TurnIndex+1)%NumPlayers;
+        Order[TurnIndex].Turn = true;
+    }
+    private static void SortCharactersByInitiative(List<Chackter> order)
+    {
+        order.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
+    }
+
+    public class Chackter
+    {
+        public int Initiative { get; set; }
+        public string Name { get; set; }
+        public bool Turn { get; set; }
+    }
+}
