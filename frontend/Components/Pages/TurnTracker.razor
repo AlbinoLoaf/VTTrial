@@ -1,0 +1,109 @@
+@page "/tracker"
+@attribute [StreamRendering]
+@using System.Collections.Generic;
+@rendermode InteractiveServer
+
+<PageTitle>Tracker</PageTitle>
+
+<h1>Tracker</h1>
+
+@if (Order == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">Character</div>
+            <div class="col">Initiative</div>
+            <div class="col">Turn</div>
+        </div>
+        @foreach (var Character in Order)
+        {
+            <div class="row @TurnColour(Character.Turn)">
+                <div class="col">@Character.Name</div>
+                <div class="col">
+                    <!-- Left arrow button -->
+                    <div class="btn" @onclick="() => ChangeIniative(-1, Character)">@LArrow</div>
+
+                    @Character.Initiative
+
+                    <!-- Right arrow button -->
+                    <div class="btn" @onclick="() => ChangeIniative(1, Character)">@RArrow</div>
+                </div>
+                <div class="col">@IsTurn(Character.Turn)</div>
+            </div>
+        }
+
+    </div>
+    <button class="btn btn-primary" @onclick="IncrementTurn">Next turn</button>
+    <button class="btn btn-primary" @onclick="GoToTopOfInitiative">Reset Initiative</button>
+}
+
+@code {
+    public List<Chackter> Order;
+    private int TurnIndex = 0;
+    private int NumPlayers = 8;
+    private readonly string LArrow = "<";
+    private readonly string RArrow = ">";
+
+    protected override async Task OnInitializedAsync()
+    {
+        string[] names = { "Bob", "Alice", "Mallory", "Charlie", "Adam", "Silas" };
+        Order = Enumerable.Range(1, NumPlayers).Select(index => new Chackter
+            {
+                Initiative = Random.Shared.Next(0, 30),
+                Name = names[Random.Shared.Next(names.Length)],
+                Turn = false
+            }).ToList();
+
+        SortCharactersByInitiative(Order);
+        Order[0].Turn = true;
+    }
+
+    private static void SortCharactersByInitiative(List<Chackter> order)
+    {
+        order.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
+    }
+
+    public class Chackter
+    {
+        public int Initiative { get; set; }
+        public string Name { get; set; }
+        public bool Turn { get; set; }
+    }
+
+    private string TurnColour(bool index)
+    {
+        return index ? "class= bg-secondary text-body-secondar" : "";
+    }
+
+    private void IncrementTurn()
+    {
+        Order[TurnIndex].Turn = false;
+        TurnIndex = (TurnIndex + 1) % NumPlayers;
+        Order[TurnIndex].Turn = true;
+    }
+
+    private void GoToTopOfInitiative()
+    {
+        foreach(Chackter chr in Order)
+        {
+            chr.Turn=false;
+        }
+        Order[0].Turn = true;
+    }
+
+    private string IsTurn(bool cur_turn)
+    {
+        return cur_turn ? "x" : "";
+    }
+
+    private void ChangeIniative(int change, Chackter chr)
+    {
+        chr.Initiative = chr.Initiative + change;
+        SortCharactersByInitiative(Order);
+
+    }
+}
