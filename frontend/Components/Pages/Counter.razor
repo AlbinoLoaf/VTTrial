@@ -5,19 +5,22 @@
 
 <h1>Create new character</h1>
 
-<p role="status">Current count: @currentCount</p>
+<InputText @bind-Value="Name"  placeholder = "Name"/>
+<NumberInput TValue="int" @bind-Value="@Initiative" Placeholder="Enter amount" />
+<p id = "demo">This is my character; name: @Name initiative: @Initiative</p>
 
 
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="Submit">Submit</button>
 
 @code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    private string Name;
+    private int Initiative;
+    private Character Character;
+    private void Submit()
     {
-        currentCount++;
+        Character = new Character{
+            Name = Name,
+            Initiative = Initiative,
+        };
     }
-
-    //indsæt input-fields til name og initiative
 }
