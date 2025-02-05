@@ -14,12 +14,12 @@
 else
 {
     <div class="container text-center">
-        <div class="row">
-            <div class="col">Character</div>
-            <div class="col">Initiative</div>
-            <div class="col">Turn</div>
-        </div>
-        @foreach (var Character in Order)
+    <div class="row">
+        <div class="col">Character</div>
+        <div class="col">Initiative</div>
+        <div class="col">Turn</div>
+    </div>
+    @foreach (var Character in Order)
         {
             <div class="row @TurnColour(Character.Turn)">
                 <div class="col">@Character.Name</div>
@@ -42,7 +42,7 @@ else
 }
 
 @code {
-    public List<Chackter> Order;
+    public required List<Chackter> Order;
     private int TurnIndex = 0;
     private int NumPlayers = 8;
     private readonly string LArrow = "<";
@@ -88,11 +88,15 @@ else
 
     private void GoToTopOfInitiative()
     {
-        foreach(Chackter chr in Order)
+        foreach (Chackter chr in Order)
         {
-            chr.Turn=false;
+            chr.Turn = false;
         }
+<<<<<<< HEAD
         TurnIndex=0;
+=======
+        TurnIndex = 0;
+>>>>>>> f417e949fd222d37f837f5a2901037e8e5afc679
         Order[0].Turn = true;
     }
 
@@ -105,6 +109,7 @@ else
     {
         chr.Initiative = chr.Initiative + change;
         SortCharactersByInitiative(Order);
+        GoToTopOfInitiative();
 
     }
 }
