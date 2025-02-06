@@ -1,26 +1,35 @@
 ﻿@page "/new_character"
 @rendermode InteractiveServer
+@using Components
 
 <PageTitle>New Character</PageTitle>
 
 <h1>Create new character</h1>
 
 <InputText @bind-Value="Name"  placeholder = "Name"/>
-<NumberInput TValue="int" @bind-Value="@Initiative" Placeholder="Enter amount" />
-<p id = "demo">This is my character; name: @Name initiative: @Initiative</p>
+<InputNumber TValue="int" @bind-Value="@Initiative"  />
+<p id = "demo">
+This is my character; <br/> 
+name: @Name <br/>
+initiative: @Initiative
+</p>
 
-
-<button class="btn btn-primary" @onclick="Submit">Submit</button>
-
+@if (!success){
+    <Alert Color="AlertColor.Danger"> Required fields not filled out, character not created </Alert>
+}
+<button class="btn btn-primary" @onclick="SubmitAsync">Submit</button>
 @code {
     private string Name;
     private int Initiative;
-    private Character Character;
-    private void Submit()
+    private Character? Character;
+    private bool success = true;
+
+    private void SubmitAsync()
     {
-        Character = new Character{
-            Name = Name,
-            Initiative = Initiative,
-        };
+        if (Name == null)
+            success = false;
+        else
+            success = true;
+        StateHasChanged();
     }
 }

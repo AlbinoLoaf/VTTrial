@@ -1,0 +1,17 @@
+@namespace Comps
+
+<div class="row">
+    <div class="col-5 col-md-3 text-end"> @EmployeeId :</div>
+    <div class="col-7 col-md-9">Value</div>
+</div>
+
+@code {
+//<DialogComponent Description = "Hello"/>
+    [Parameter] public int EmployeeId { get; set; }
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+    }
+}
