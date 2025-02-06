@@ -1,6 +1,7 @@
 @page "/tracker"
 @attribute [StreamRendering]
 @using System.Collections.Generic;
+@using System.ComponentModel.DataAnnotations;
 @rendermode InteractiveServer
 
 <PageTitle>Tracker</PageTitle>
@@ -24,29 +25,23 @@ else
             <div class="row @TurnColour(Character.Turn)">
                 <div class="col">@Character.Name</div>
                 <div class="col">
-                    <!-- Left arrow button -->
-                    <div class="btn" @onclick="() => ChangeIniative(-1, Character)">@LArrow</div>
-
-                    @Character.Initiative
-
-                    <!-- Right arrow button -->
-                    <div class="btn" @onclick="() => ChangeIniative(1, Character)">@RArrow</div>
+                    <input value="@Character.Initiative" @onchange="e => OnInput(e, Character)"
+                        placeholder="@Character.Initiative" />
                 </div>
                 <div class="col">@IsTurn(Character.Turn)</div>
             </div>
         }
-
     </div>
+
     <button class="btn btn-primary" @onclick="IncrementTurn">Next turn</button>
     <button class="btn btn-primary" @onclick="GoToTopOfInitiative">Reset Initiative</button>
 }
 
 @code {
-    public List<Chackter> Order;
+    public required List<Chackter> Order;
     private int TurnIndex = 0;
-    private int NumPlayers = 8;
-    private readonly string LArrow = "<";
-    private readonly string RArrow = ">";
+    private int NumPlayers = 5;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,6 +55,14 @@ else
 
         SortCharactersByInitiative(Order);
         Order[0].Turn = true;
+    }
+    private void OnInput(ChangeEventArgs e, Chackter character)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int newInitiative))
+        {
+            character.Initiative = newInitiative;
+        }
+        SortCharactersByInitiative(Order);
     }
 
     private static void SortCharactersByInitiative(List<Chackter> order)
@@ -88,10 +91,11 @@ else
 
     private void GoToTopOfInitiative()
     {
-        foreach(Chackter chr in Order)
+        foreach (Chackter chr in Order)
         {
-            chr.Turn=false;
+            chr.Turn = false;
         }
+        TurnIndex = 0;
         Order[0].Turn = true;
     }
 
@@ -100,10 +104,11 @@ else
         return cur_turn ? "x" : "";
     }
 
-    private void ChangeIniative(int change, Chackter chr)
+    @* private void ChangeIniative(int change, Chackter chr)
     {
         chr.Initiative = chr.Initiative + change;
         SortCharactersByInitiative(Order);
+        GoToTopOfInitiative();
 
-    }
+    } *@
 }
