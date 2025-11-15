@@ -1,0 +1,2 @@
+docker build -t vtt .
+docker run -it --rm --name test  vtt

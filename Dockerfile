@@ -4,8 +4,8 @@ WORKDIR /src
 COPY src .
 
 WORKDIR /frontend
-RUN ls
-RUN dotnet build .
+#RUN ls
+#RUN dotnet build
 
-EXPOSE 80
-
+#EXPOSE 80
+ENTRYPOINT ["ls","-l"]
