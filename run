@@ -1,2 +1,4 @@
+docker stop vtt
+docker remove vtt
 docker build -t vtt .
-docker run -it --rm --name test  vtt
+docker run --name vtt -p 5211:5211 vtt

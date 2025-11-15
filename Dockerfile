@@ -3,9 +3,10 @@ WORKDIR /src
 
 COPY src .
 
-WORKDIR /frontend
-#RUN ls
-#RUN dotnet build
+RUN dotnet build
 
-#EXPOSE 80
-ENTRYPOINT ["ls","-l"]
+RUN dotnet publish
+
+
+EXPOSE 5211 
+ENTRYPOINT ["dotnet", "run", "--project", "frontend/"]
