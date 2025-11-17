@@ -1,3 +1,16 @@
+# To run the project
+- Have docker installed
+- make shure that you have execute priveliges to the ./run file 
+- run `$ ./run &` to run the program as a backround process
+- the program will start on `0.0.0.0:5211`
+
+
+
+
+
+
+
+
 # VTTrial
 A pet project creating a website based VTT, for DnD 5e
 
