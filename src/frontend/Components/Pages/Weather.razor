@@ -8,7 +8,7 @@
 
 <p>This component demonstrates showing data.</p>
 
-<Dice/>
+<Die />
 
 
 @if (forecasts == null)
@@ -42,6 +42,7 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+
 
     protected override async Task OnInitializedAsync()
     {

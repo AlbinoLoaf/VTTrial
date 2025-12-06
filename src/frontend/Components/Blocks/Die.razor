@@ -1,0 +1,22 @@
+﻿<!-- evt. bedre terninger: https://codepen.io/carsonf92/pen/MWqxeqy?editors=1010 -->
+
+@rendermode InteractiveServer
+
+<button class="btn btn-primary" @onclick="Roll">@roll</button>
+
+@code {
+    private int selectedDie = 20;
+    private Random diceRoll = new Random();
+    private int roll = 0;
+
+    
+    protected override void OnInitialized()
+    {
+      Roll();
+    }
+
+    private void Roll()
+    {
+        roll = diceRoll.Next(1,selectedDie+1);
+    }
+}
