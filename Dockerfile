@@ -1,13 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY src .
 
 RUN dotnet build
 
-#RUN dotnet publish
+WORKDIR /src/frontend
+RUN dotnet publish -c Release -o app
 
 
-EXPOSE 5211 
-ENTRYPOINT ["dotnet", "run", "--project", "frontend/vttrial.csproj", "--urls", "http://0.0.0.0:5211"]
+EXPOSE 8080 
+ENTRYPOINT ["./app/vttrial"]
+#ENTRYPOINT ["dotnet", "run", "--project", "frontend/vttrial.csproj", "--urls", "http://0.0.0.0:5211"]
 
