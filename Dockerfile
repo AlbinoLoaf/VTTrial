@@ -16,11 +16,11 @@ RUN dotnet build frontend/vttrial.csproj -c Release -o /app/build
 
 
 WORKDIR /src/frontend
-from build as publish
+FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 as build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS build
 ENV ASPNETCORE_HTTP_PORTS=8080
 EXPOSE 8080 
 WORKDIR /app
