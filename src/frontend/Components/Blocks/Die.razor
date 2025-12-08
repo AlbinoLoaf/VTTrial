@@ -7,12 +7,14 @@
 @code {
     private int selectedDie = 20;
     private Random diceRoll = new Random();
-    private int roll = 0;
 
+    [Parameter]
+    public int roll {get; set;} = 0;
+    [Parameter]
+    public EventCallback<int> rollChanged { get; set; }
     
     protected override void OnInitialized()
     {
-      Roll();
     }
 
     private void Roll()

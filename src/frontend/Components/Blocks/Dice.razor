@@ -1,0 +1,48 @@
+@rendermode InteractiveServer
+
+@foreach (var die in dice){
+  <Die @bind-roll="die.roll"/>
+}
+
+<!-- <p> Total: @total </p> -->
+<div> 
+  <button class="btn btn-primary" @onclick="AddD20">+</button>
+  <button class="btn btn-primary" @onclick="RemoveDie">-</button>
+</div>
+
+@code
+{
+  private List<Die> dice = new List<Die>();
+  public int total {get;set;} = 0;
+
+  protected override void OnInitialized()
+  {
+    AddD20();
+    AddD20();
+    AddD20();
+  }
+
+  protected void AddD20()
+  {
+    AddDie(20);
+  }
+
+  protected void AddDie(int sides)
+  {
+    dice.Add(new Die(sides));
+  }
+
+  protected void RemoveDie()
+  {
+    dice.RemoveAt(dice.Count-1);
+  }
+  
+  protected class Die{
+    public int sides {get; set;}
+    public int roll {get; set;}
+    public Die(int sides) 
+    {
+      sides = sides;
+    }
+  }
+}
