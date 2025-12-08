@@ -1,10 +1,11 @@
 @rendermode InteractiveServer
 
 @foreach (var die in dice){
-  <Die @bind-roll="die.roll"/>
+  <Die sides="die.sides" @bind-roll="die.roll"/>
 }
 
-<!-- <p> Total: @total </p> -->
+
+<p> Total: @Total() </p>
 <div> 
   <button class="btn btn-primary" @onclick="AddD20">+</button>
   <button class="btn btn-primary" @onclick="RemoveDie">-</button>
@@ -13,12 +14,9 @@
 @code
 {
   private List<Die> dice = new List<Die>();
-  public int total {get;set;} = 0;
 
   protected override void OnInitialized()
   {
-    AddD20();
-    AddD20();
     AddD20();
   }
 
@@ -32,6 +30,15 @@
     dice.Add(new Die(sides));
   }
 
+  protected int Total(){
+    int total = 0;
+    foreach (var die in dice)
+    {
+      total += die.roll;
+    }
+    return total;
+  }
+
   protected void RemoveDie()
   {
     dice.RemoveAt(dice.Count-1);
@@ -39,10 +46,11 @@
   
   protected class Die{
     public int sides {get; set;}
-    public int roll {get; set;}
+    public int roll {get; set;} = 0;
+
     public Die(int sides) 
     {
-      sides = sides;
+      this.sides = sides;
     }
   }
 }

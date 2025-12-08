@@ -1,24 +1,21 @@
 ﻿<!-- evt. bedre terninger: https://codepen.io/carsonf92/pen/MWqxeqy?editors=1010 -->
-
 @rendermode InteractiveServer
 
 <button class="btn btn-primary" @onclick="Roll">@roll</button>
 
 @code {
-    private int selectedDie = 20;
+    [Parameter]
+    public int sides {get; set;} = 20;
     private Random diceRoll = new Random();
 
     [Parameter]
-    public int roll {get; set;} = 0;
+    public int roll {get; set;}
     [Parameter]
     public EventCallback<int> rollChanged { get; set; }
     
-    protected override void OnInitialized()
-    {
-    }
-
     private void Roll()
     {
-        roll = diceRoll.Next(1,selectedDie+1);
+        roll = diceRoll.Next(1,sides+1);
+        rollChanged.InvokeAsync(roll);
     }
 }
