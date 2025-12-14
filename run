@@ -1,0 +1,4 @@
+docker stop vtt
+docker rm vtt
+docker build -t vtt .
+docker run --name vtt -p 8080:8080 vtt
