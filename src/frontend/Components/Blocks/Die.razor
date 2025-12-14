@@ -1,0 +1,21 @@
+﻿<!-- evt. bedre terninger: https://codepen.io/carsonf92/pen/MWqxeqy?editors=1010 -->
+@rendermode InteractiveServer
+
+<button class="btn btn-primary" @onclick="Roll">@roll</button>
+
+@code {
+    [Parameter]
+    public int sides {get; set;} = 20;
+    private Random diceRoll = new Random();
+
+    [Parameter]
+    public int roll {get; set;}
+    [Parameter]
+    public EventCallback<int> rollChanged { get; set; }
+    
+    private void Roll()
+    {
+        roll = diceRoll.Next(1,sides+1);
+        rollChanged.InvokeAsync(roll);
+    }
+}
